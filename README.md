@@ -1,2 +1,2 @@
-# warehouse-app
-Warehouse web app in React.js and Firebase
+# Warehouse inventory app
+Warehouse inventory web app in React.js and Firebase
