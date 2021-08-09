@@ -19,6 +19,8 @@ import firebase from "./firebase";
 import CustomizedDialogs from './CustomDialog';
 import RegistrationForm from './editForm'
 import EditItem from './editItem';
+import SearchBar from './searchBar';
+import Fuse from "fuse.js";
 
 
 function Copyright() {
@@ -70,11 +72,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Album() {
+export default function Album(props) {
     const classes = useStyles();
 
 
     const [products, setProducts] = useState([]);
+    const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
@@ -103,12 +106,38 @@ export default function Album() {
         // eslint-disable-next-line
     }, []);
 
+    const searchData = (pattern) => {
+        console.log(pattern)
+        if (!pattern) {
+            getProducts();
+            return;
+        }
+
+        const fuse = new Fuse(products, {
+            keys: ["name"],
+        });
+
+        const result = fuse.search(pattern);
+        const matches = [];
+        if (!result.length) {
+            setProducts([]);
+        } else {
+            result.forEach(({ item }) => {
+                matches.push(item);
+            });
+            setProducts(matches);
+        }
+    };
 
 
     return (
         <React.Fragment>
             <CssBaseline />
             <main>
+                <SearchBar
+                    placeholder="Search"
+                    onChange={(e) => searchData(e.target.value)}
+                />
                 <Container className={classes.cardGrid} maxWidth="md">
                     {/* End hero unit */}
                     <Grid container spacing={4}>
