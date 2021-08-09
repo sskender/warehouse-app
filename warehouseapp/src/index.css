@@ -38,19 +38,4 @@ code {
   border-radius: 0 5px 5px 0;
   outline: none;
 }
-.inputBox {
-  display: flex;
-  flex-direction: column;
-}
 
-input {
-  margin-bottom: 10px;
-}
-
-textarea {
-  margin-bottom: 10px;
-}
-
-button {
-  margin-bottom: 8px;
-}
