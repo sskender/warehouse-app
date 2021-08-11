@@ -7,7 +7,7 @@ import * as Yup from 'yup'
 import firebase from "./firebase";
 import { v4 as uuidv4 } from "uuid";
 
-const EditItem = ({ product }) => {
+const EditItem = ({ product, handleClose }) => {
     const ref = firebase.firestore().collection("products");
     console.log(`product u formi ${product.quantity}`)
     const [products, setProducts] = useState([]);
@@ -92,8 +92,10 @@ const EditItem = ({ product }) => {
 
 
                             <Button type='submit' style={btnStyle} variant='contained'
-                                onClick={() =>
-                                    editSchool({ name, quantity, reservation, sold, id: product.id })
+                                onClick={() => {
+                                    editSchool({ name, quantity, reservation, sold, id: product.id });
+                                    handleClose();
+                                }
                                 }
                                 color='primary'>Save changes</Button>
 
@@ -101,7 +103,7 @@ const EditItem = ({ product }) => {
                     )}
                 </Formik>
             </Paper>
-        </Grid>
+        </Grid >
     )
 }
 

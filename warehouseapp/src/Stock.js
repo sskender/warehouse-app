@@ -148,9 +148,8 @@ export default function Album(props) {
                                 }} className={classes.cardContent}>
                                     <Button
                                         size="small" color="primary">
-                                        <CustomizedDialogs title="Add item">
-                                            <RegistrationForm />
-                                        </CustomizedDialogs>
+                                        <CustomizedDialogs title="Add item"/>
+                                        
                                     </Button>
                                 </CardContent>
 
@@ -178,9 +177,8 @@ export default function Album(props) {
                                             Sold: {card.sold}
                                         </Typography>
                                         <Button size="small" color="primary">
-                                            <CustomizedDialogs title="Manage stock" >
-                                                <EditItem product={card} />
-                                            </CustomizedDialogs>
+                                            <CustomizedDialogs title="Manage stock" product={card} />
+                                                
                                         </Button>
                                     </CardContent>
 

@@ -9,6 +9,9 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 
+import RegistrationForm from './editForm';
+import EditItem from './editItem';
+
 const styles = (theme) => ({
     root: {
         margin: 0,
@@ -49,9 +52,8 @@ const DialogActions = withStyles((theme) => ({
     },
 }))(MuiDialogActions);
 
-export default function CustomizedDialogs({ children, title }) {
+export default function CustomizedDialogs({ title, product }) {
     const [open, setOpen] = React.useState(false);
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -64,12 +66,13 @@ export default function CustomizedDialogs({ children, title }) {
             <Button variant="outlined" color="primary" onClick={handleClickOpen}>
                 {title}
             </Button>
-            <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
+            <Dialog aria-labelledby="customized-dialog-title" open={open}>
                 <DialogTitle id="customized-dialog-title" onClose={handleClose}>
                     {title}
                 </DialogTitle>
                 <DialogContent dividers>
-                    {children}
+                    {title === "Add item" ? <RegistrationForm handleClose={handleClose} /> : <EditItem product={product} handleClose={handleClose} />}
+
                 </DialogContent>
 
             </Dialog>

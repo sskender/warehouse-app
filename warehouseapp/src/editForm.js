@@ -8,9 +8,9 @@ import { storage } from "./firebase";
 import firebase from "./firebase";
 import { v4 as uuidv4 } from "uuid";
 
-const RegistrationForm = () => {
+const RegistrationForm = ({handleClose}) => {
     const ref = firebase.firestore().collection("products");
-
+console.log(handleClose)
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
@@ -76,6 +76,7 @@ const RegistrationForm = () => {
                     setFile(null);
                     setURL(url);
                     addSchool({ name, quantity, reservation, sold, url, id: uuidv4() })
+                    handleClose()
                 });
         });
     }
