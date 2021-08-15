@@ -4,13 +4,12 @@ import { TextField } from '@material-ui/core'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
 import * as Yup from 'yup'
 
-import firebase from "./firebase";
-import { v4 as uuidv4 } from "uuid";
+import firebase from "../../services/firebase";
 
-const EditItem = ({ product, handleClose }) => {
+const EditFrom = ({ product, handleClose }) => {
+
     const ref = firebase.firestore().collection("products");
-    console.log(`product u formi ${product.quantity}`)
-    const [products, setProducts] = useState([]);
+
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState(product.name);
     const [quantity, setQuantity] = useState(product.quantity);
@@ -62,17 +61,10 @@ const EditItem = ({ product, handleClose }) => {
                 <Formik initialValues={initialValues} validationSchema={validationSchema} >
                     {(props) => (
                         <Form noValidate>
-                            {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
-                    onChange={props.handleChange} /> */}
-
                             <Field as={TextField} name='name' label='Name' fullWidth
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 required />
-
-
-                            {/* <TextField label='Email' name='email' type='Email' fullWidth 
-                    {...props.getFieldProps('email')}/> */}
 
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity}
@@ -107,4 +99,4 @@ const EditItem = ({ product, handleClose }) => {
     )
 }
 
-export default EditItem;
+export default EditFrom;

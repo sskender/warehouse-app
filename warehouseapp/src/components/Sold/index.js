@@ -1,27 +1,17 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
-import Button from '@material-ui/core/Button';
-import CameraIcon from '@material-ui/icons/PhotoCamera';
 import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
-import { useState, useEffect, Fragment } from "react";
-import firebase from "./firebase";
+import { useState, useEffect } from "react";
+import { makeStyles } from '@material-ui/core/styles';
 
-import CustomizedDialogs from './CustomDialog';
-import RegistrationForm from './editForm'
-import EditItem from './editItem';
-import SearchBar from './searchBar';
-import Fuse from "fuse.js";
-
+import firebase from "../../services/firebase";
 
 function Copyright() {
     return (
@@ -72,19 +62,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function Album(props) {
+export default function Sold() {
     const classes = useStyles();
 
-
     const [products, setProducts] = useState([]);
-    const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
-    const [name, setName] = useState("");
-    const [quantity, setQuantity] = useState("");
-    const [reservation, setReservation] = useState("");
-    const [sold, setSold] = useState("");
-    const [file, setFile] = useState(null);
-    const [url, setURL] = useState("");
 
     const ref = firebase.firestore().collection("products");
 
@@ -103,60 +85,18 @@ export default function Album(props) {
 
     useEffect(() => {
         getProducts();
-        // eslint-disable-next-line
     }, []);
 
-    const searchData = (pattern) => {
-        console.log(pattern)
-        if (!pattern) {
-            getProducts();
-            return;
-        }
-
-        const fuse = new Fuse(products, {
-            keys: ["name"],
-        });
-
-        const result = fuse.search(pattern);
-        const matches = [];
-        if (!result.length) {
-            setProducts([]);
-        } else {
-            result.forEach(({ item }) => {
-                matches.push(item);
-            });
-            setProducts(matches);
-        }
-    };
 
 
     return (
         <React.Fragment>
             <CssBaseline />
             <main>
-                <SearchBar
-                    placeholder="Search"
-                    onChange={(e) => searchData(e.target.value)}
-                />
                 <Container className={classes.cardGrid} maxWidth="md">
-                    {/* End hero unit */}
                     <Grid container spacing={4}>
-                        <Grid item xs={3} sm={6} md={4}>
-                            <Card className={classes.card}>
-                                <CardContent style={{
-                                    paddingTop: '50%',
-                                }} className={classes.cardContent}>
-                                    <Button
-                                        size="small" color="primary">
-                                        <CustomizedDialogs title="Add item"/>
-                                        
-                                    </Button>
-                                </CardContent>
-
-                            </Card>
-                        </Grid>
                         {products.map((card) => (
-                            <Grid item key={card} xs={12} sm={6} md={4}>
+                            <Grid item key={card.name} xs={12} sm={6} md={4}>
                                 <Card className={classes.card}>
                                     <CardMedia
                                         className={classes.cardMedia}
@@ -168,27 +108,15 @@ export default function Album(props) {
                                             {card.name}
                                         </Typography>
                                         <Typography >
-                                            Available: {card.quantity}
-                                        </Typography>
-                                        <Typography>
-                                            Reserved: {card.reservation}
-                                        </Typography>
-                                        <Typography>
                                             Sold: {card.sold}
                                         </Typography>
-                                        <Button size="small" color="primary">
-                                            <CustomizedDialogs title="Manage stock" product={card} />
-                                                
-                                        </Button>
                                     </CardContent>
-
                                 </Card>
                             </Grid>
                         ))}
                     </Grid>
                 </Container>
             </main>
-            {/* Footer */}
             <footer className={classes.footer}>
                 <Typography variant="h6" align="center" gutterBottom>
                     Warehouse app
@@ -198,7 +126,6 @@ export default function Album(props) {
                 </Typography>
                 <Copyright />
             </footer>
-            {/* End footer */}
         </React.Fragment >
     );
 }

@@ -1,18 +1,17 @@
-import React, { useState, useEffect, Fragment } from "react";
+import * as Yup from 'yup'
+
+import React, { useState } from "react";
 import { Grid, Paper, Button, Typography } from '@material-ui/core'
 import { TextField } from '@material-ui/core'
 import { Formik, Form, Field, ErrorMessage } from 'formik'
-import * as Yup from 'yup'
-import { storage } from "./firebase";
-
-import firebase from "./firebase";
+import { storage } from "../../services/firebase";
 import { v4 as uuidv4 } from "uuid";
 
-const RegistrationForm = ({handleClose}) => {
+import firebase from "../../services/firebase";
+
+const AddForm = ({ handleClose }) => {
     const ref = firebase.firestore().collection("products");
-console.log(handleClose)
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(false);
+
     const [name, setName] = useState("");
     const [quantity, setQuantity] = useState("");
     const [reservation, setReservation] = useState("");
@@ -22,48 +21,26 @@ console.log(handleClose)
 
     const paperStyle = { padding: '0 15px 40px 15px', width: 250, }
     const btnStyle = { marginTop: 10 }
-    const phoneRegExp = /^[2-9]{2}[0-9]{8}/
-    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
-    const initialValues = {
-        name: 'Name',
-        email: '',
-        available: '5',
-        reserved: '2',
-        password: '',
-        confirmPassword: ''
-    }
+
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
-        email: Yup.string().email("Enter valid email").required("Required"),
-        available: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
-        reserved: Yup.number().typeError("Enter valid reservation number").required("Required"),
-        //available: Yup.string().matches(phoneRegExp, "Enter valid Phone number").required("Required"),
-        password: Yup.string().min(8, "Minimum characters should be 8")
-            .matches(passwordRegExp, "Password must have one upper, lower case, number, special symbol").required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matches").required('Required')
+        quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
+        reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
+        sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
     })
     const onFileChange = (e) => {
         setFile(e.target.files[0])
     }
-    const onSubmit = (values, props) => {
-
-        alert(JSON.stringify(values), null, 2)
-        props.resetForm()
-    }
-
 
     // ADD FUNCTION
-    function addSchool(newSchool) {
+    function addItem(newItem) {
         ref
-            //.doc() use if for some reason you want that firestore generates the id
-            .doc(newSchool.id)
-            .set(newSchool)
+            .doc(newItem.id)
+            .set(newItem)
             .catch((err) => {
                 console.error(err);
             });
     }
-
-
 
     function handleUpload(e) {
         e.preventDefault();
@@ -75,7 +52,7 @@ console.log(handleClose)
                 .then((url) => {
                     setFile(null);
                     setURL(url);
-                    addSchool({ name, quantity, reservation, sold, url, id: uuidv4() })
+                    addItem({ name, quantity, reservation, sold, url, id: uuidv4() })
                     handleClose()
                 });
         });
@@ -83,28 +60,23 @@ console.log(handleClose)
 
     const handleSubmit = (e) => {
         handleUpload(e)
-        // addSchool({ name, quantity, reservation, sold, url, id: uuidv4() })
     }
+
 
     return (
         <Grid>
             <Paper elevation={0} style={paperStyle}>
                 <Grid align='center'>
-                    <Typography variant='caption'>Fill the form to edit availability.</Typography>
+                    <Typography variant='caption'>Fill the form to add item.</Typography>
                 </Grid>
-                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
+                <Formik validationSchema={validationSchema}>
                     {(props) => (
                         <Form noValidate>
-                            {/* <TextField label='Name' name="name" fullWidth value={props.values.name}
-                    onChange={props.handleChange} /> */}
                             <input type="file" onChange={onFileChange} />
                             <Field as={TextField} name='name' label='Name' fullWidth
                                 value={name} onChange={(e) => setName(e.target.value)}
                                 error={props.errors.name && props.touched.name}
                                 helperText={<ErrorMessage name='name' />} required />
-
-                            {/* <TextField label='Email' name='email' type='Email' fullWidth 
-                    {...props.getFieldProps('email')}/> */}
 
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity} onChange={(e) => setQuantity(e.target.value)}
@@ -121,10 +93,8 @@ console.log(handleClose)
                                 error={props.errors.sold && props.touched.sold}
                                 helperText={<ErrorMessage name='sold' />} required />
 
-                            <Button type='submit' style={btnStyle} variant='contained'
-                                onClick={handleSubmit}
-                                color='primary'>Save changes</Button>
-
+                            <Button type='submit' style={btnStyle} variant='contained' color='primary'
+                                onClick={handleSubmit}>Save changes</Button>
                         </Form>
                     )}
                 </Formik>
@@ -133,4 +103,4 @@ console.log(handleClose)
     )
 }
 
-export default RegistrationForm;
+export default AddForm;
