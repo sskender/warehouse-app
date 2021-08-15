@@ -105,7 +105,7 @@ export default function Sold() {
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {card.name}
+                                            {card.name}, {card.code}
                                         </Typography>
                                         <Typography >
                                             Sold: {card.sold}

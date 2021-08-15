@@ -13,6 +13,7 @@ const AddForm = ({ handleClose }) => {
     const ref = firebase.firestore().collection("products");
 
     const [name, setName] = useState("");
+    const [code, setCode] = useState("");
     const [quantity, setQuantity] = useState("");
     const [reservation, setReservation] = useState("");
     const [sold, setSold] = useState("");
@@ -24,6 +25,7 @@ const AddForm = ({ handleClose }) => {
 
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
+        code: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
         quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
         reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
         sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
@@ -52,7 +54,7 @@ const AddForm = ({ handleClose }) => {
                 .then((url) => {
                     setFile(null);
                     setURL(url);
-                    addItem({ name, quantity, reservation, sold, url, id: uuidv4() })
+                    addItem({ name, code, quantity, reservation, sold, url, id: uuidv4() })
                     handleClose()
                 });
         });
@@ -77,6 +79,11 @@ const AddForm = ({ handleClose }) => {
                                 value={name} onChange={(e) => setName(e.target.value)}
                                 error={props.errors.name && props.touched.name}
                                 helperText={<ErrorMessage name='name' />} required />
+
+                            <Field as={TextField} name='code' label='Code' fullWidth
+                                value={code} onChange={(e) => setCode(e.target.value)}
+                                error={props.errors.code && props.touched.code}
+                                helperText={<ErrorMessage name='code' />} required />
 
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity} onChange={(e) => setQuantity(e.target.value)}

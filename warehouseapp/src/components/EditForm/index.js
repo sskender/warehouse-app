@@ -12,6 +12,7 @@ const EditFrom = ({ product, handleClose }) => {
 
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState(product.name);
+    const [code, setCode] = useState(product.code);
     const [quantity, setQuantity] = useState(product.quantity);
     const [reservation, setReservation] = useState(product.reservation);
     const [sold, setSold] = useState(product.sold);
@@ -30,22 +31,19 @@ const EditFrom = ({ product, handleClose }) => {
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
-        email: Yup.string().email("Enter valid email").required("Required"),
-        available: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
-        reserved: Yup.number().typeError("Enter valid reservation number").required("Required"),
-        //available: Yup.string().matches(phoneRegExp, "Enter valid Phone number").required("Required"),
-        password: Yup.string().min(8, "Minimum characters should be 8")
-            .matches(passwordRegExp, "Password must have one upper, lower case, number, special symbol").required('Required'),
-        confirmPassword: Yup.string().oneOf([Yup.ref('password')], "Password not matches").required('Required')
+        code: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
+        quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
+        reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
+        sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
     })
 
 
     // EDIT FUNCTION
-    function editSchool(updatedSchool) {
+    function editItem(updatedItem) {
         setLoading();
         ref
-            .doc(updatedSchool.id)
-            .update(updatedSchool)
+            .doc(updatedItem.id)
+            .update(updatedItem)
             .catch((err) => {
                 console.error(err);
             });
@@ -66,6 +64,10 @@ const EditFrom = ({ product, handleClose }) => {
                                 onChange={(e) => setName(e.target.value)}
                                 required />
 
+                            <Field as={TextField} name="code" label='Code' fullWidth
+                                value={code}
+                                onChange={(e) => setCode(e.target.value)}
+                                required />
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
@@ -85,7 +87,7 @@ const EditFrom = ({ product, handleClose }) => {
 
                             <Button type='submit' style={btnStyle} variant='contained'
                                 onClick={() => {
-                                    editSchool({ name, quantity, reservation, sold, id: product.id });
+                                    editItem({ name, code, quantity, reservation, sold, id: product.id });
                                     handleClose();
                                 }
                                 }

@@ -100,7 +100,7 @@ export default function Album(props) {
         }
 
         const fuse = new Fuse(products, {
-            keys: ["name"],
+            keys: ["name", "code"],
         });
 
         const result = fuse.search(pattern);
@@ -148,7 +148,7 @@ export default function Album(props) {
                                     />
                                     <CardContent className={classes.cardContent}>
                                         <Typography gutterBottom variant="h5" component="h2">
-                                            {card.name}
+                                            {card.name}, {card.code}
                                         </Typography>
                                         <Typography >
                                             Available: {card.quantity}
