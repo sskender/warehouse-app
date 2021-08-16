@@ -19,19 +19,18 @@ const EditFrom = ({ product, handleClose }) => {
 
     const paperStyle = { padding: '0 15px 40px 15px', width: 250, }
     const btnStyle = { marginTop: 10 }
-    const phoneRegExp = /^[2-9]{2}[0-9]{8}/
-    const passwordRegExp = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/
+
     const initialValues = {
-        name: product.name,
-        email: '',
-        quantity: product.quantity,
-        reservation: product.reservation,
-        password: '',
-        confirmPassword: ''
+        name: '',
+        code: '',
+        available: '',
+        quantity: '',
+        reservation: '',
+        sold: '',
     }
     const validationSchema = Yup.object().shape({
         name: Yup.string().min(3, "It's too short").required("Required"),
-        code: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
+        code: Yup.number().typeError("Enter valid item code").required("Required"),
         quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
         reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
         sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
@@ -68,6 +67,7 @@ const EditFrom = ({ product, handleClose }) => {
                                 value={code}
                                 onChange={(e) => setCode(e.target.value)}
                                 required />
+
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity}
                                 onChange={(e) => setQuantity(e.target.value)}
