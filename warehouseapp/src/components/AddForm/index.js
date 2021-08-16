@@ -23,13 +23,6 @@ const AddForm = ({ handleClose }) => {
     const paperStyle = { padding: '0 15px 40px 15px', width: 250, }
     const btnStyle = { marginTop: 10 }
 
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().min(3, "It's too short").required("Required"),
-        code: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
-        quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
-        reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
-        sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
-    })
     const onFileChange = (e) => {
         setFile(e.target.files[0])
     }
@@ -71,34 +64,29 @@ const AddForm = ({ handleClose }) => {
                 <Grid align='center'>
                     <Typography variant='caption'>Fill the form to add item.</Typography>
                 </Grid>
-                <Formik validationSchema={validationSchema}>
+                <Formik >
                     {(props) => (
                         <Form noValidate>
                             <input type="file" onChange={onFileChange} />
                             <Field as={TextField} name='name' label='Name' fullWidth
                                 value={name} onChange={(e) => setName(e.target.value)}
-                                error={props.errors.name && props.touched.name}
-                                helperText={<ErrorMessage name='name' />} required />
+                                required />
 
                             <Field as={TextField} name='code' label='Code' fullWidth
                                 value={code} onChange={(e) => setCode(e.target.value)}
-                                error={props.errors.code && props.touched.code}
-                                helperText={<ErrorMessage name='code' />} required />
+                                required />
 
                             <Field as={TextField} name="quantity" label='Available' fullWidth
                                 value={quantity} onChange={(e) => setQuantity(e.target.value)}
-                                error={props.errors.quantity && props.touched.quantity}
-                                helperText={<ErrorMessage name='quantity' />} required />
+                                required />
 
                             <Field as={TextField} name="reservation" label='Reserved' fullWidth
                                 value={reservation} onChange={(e) => setReservation(e.target.value)}
-                                error={props.errors.reservation && props.touched.reservation}
-                                helperText={<ErrorMessage name='reservation' />} required />
+                                required />
 
                             <Field as={TextField} name="sold" label='Sold' fullWidth
                                 value={sold} onChange={(e) => setSold(e.target.value)}
-                                error={props.errors.sold && props.touched.sold}
-                                helperText={<ErrorMessage name='sold' />} required />
+                                required />
 
                             <Button type='submit' style={btnStyle} variant='contained' color='primary'
                                 onClick={handleSubmit}>Save changes</Button>

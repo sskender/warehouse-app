@@ -28,13 +28,6 @@ const EditFrom = ({ product, handleClose }) => {
         reservation: '',
         sold: '',
     }
-    const validationSchema = Yup.object().shape({
-        name: Yup.string().min(3, "It's too short").required("Required"),
-        code: Yup.number().typeError("Enter valid item code").required("Required"),
-        quantity: Yup.number().typeError("Enter valid stock availabilty").required("Required"),
-        reservation: Yup.number().typeError("Enter valid reservation number").required("Required"),
-        sold: Yup.number().typeError("Enter valid reservation number").required("Required"),
-    })
 
 
     // EDIT FUNCTION
@@ -55,7 +48,7 @@ const EditFrom = ({ product, handleClose }) => {
                 <Grid align='center'>
                     <Typography variant='caption'>Fill the form to edit availability.</Typography>
                 </Grid>
-                <Formik initialValues={initialValues} validationSchema={validationSchema} >
+                <Formik initialValues={initialValues} >
                     {(props) => (
                         <Form noValidate>
                             <Field as={TextField} name='name' label='Name' fullWidth
